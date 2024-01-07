@@ -1,5 +1,4 @@
 require 'graph_matching'
-require 'irb'
 
 class Array
   def extract(&blk)
