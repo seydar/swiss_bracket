@@ -1,3 +1,6 @@
+require 'graph_matching'
+require 'irb'
+
 class Array
   def extract(&blk)
     ix = find_index(&blk)
@@ -48,6 +51,18 @@ class Team
     record <=> other.record
   end
 
+  def differential(other)
+    s = record
+    o = other.record
+
+    # if a team somehow has more wins but everything else the same,
+    # that shouldn't be viewed the same as another team having a loss
+    # [3, 0, 0] should be farther from [0, 3, 0] than [0, 0, 3]
+    [(o[0] - s[0]).abs * 0.25,
+     (o[1] - s[1]).abs * 1.0,
+     (o[2] - s[2]).abs * 0.5].sum
+  end
+
   def inspect
     "#{@id}: (#{@name})"
   end
@@ -66,57 +81,60 @@ class Swiss
     @teams[0].rounds
   end
 
-  # The proper implementation should have a pruned tree
-  # I'm getting sudoku vibes
+  # This is a minimum-weight matching problem.
+  #
+  # Given a graph (nodes are teams, edges are the score differences between
+  # the unplayed teams), find the set of edges that have the lowest total weight.
   def next_round
     ranked = teams.sort {|a, b| a.record <=> b.record  }.reverse
-    p ranked.map {|t| [t.id, t.record] }
 
-    pairs      = []   # potential match pairings
-    hunting    = nil  # if we're stuck in a weird loop because of a pairing mismatch, this the one we're looking for a match for
-    interleave = 1    # how much are we going to backtrack when finding a pair for `hunting`?
-    until ranked.empty?
-      first  = ranked.shift
-      second = ranked.extract {|t| not first.played? t }
+    # possibilities
+    # A list of unplayed teams
+    posses = teams.map do |team|
+      [team,
+       teams.filter {|t| t != team && ! t.played?(team) }]
+    end.to_h
 
-      if second
-        pairs << [first, second]
+    pairs = best_pairing posses
 
-        # we did it! we found a suitable match!
-        # reset everything
-        if first == hunting
-          puts "got a match after #{interleave} tries"
-          hunting = nil
-          interleave = 1
-        end
+    sort_by_max_rest pairs
+  end
 
-      # backtrack by an increasing number of matches
+  def sort_by_max_rest(pairs)
+    pairs.sort_by do |left, right|
+      unless left.matches.empty? || right.matches.empty?
+        t1 = left.matches.last.time
+        t2 = right.matches.last.time
+        t1.zip(t2).map(&:avg)
       else
-        hunting = first
-        
-        # swap every other element
-        # [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
-        # [2, 1, 4, 3, 6, 5, 8, 7, 10, 9]
-        #puts "finding a match for #{first.id}, #{first.record}"
-        #puts "#{first.id} has played #{first.matches.map {|m| m.opponent.id }.inspect}"
-        #p ranked.map {|t| [t.id, t.record] }
-        teams = [*interleave.times.map { pairs.pop }.reverse.flatten, first]
-        #puts "working with: #{teams.map {|t| [t.id, t.record] }.inspect}"
-        #reorder = teams.reverse.each_slice(2).map {|a, b, c| b ? [b, a] : [a] }.flatten.reverse
-        reorder = teams.shuffle :random => PRNG
-        ranked  = reorder + ranked
-        #p ranked
-        #p ranked.map {|t| [t.id, t.record] }
-        interleave += 1
+        0
       end
     end
+  end
+  
+  def best_pairing(possibilities)
+    ids = possibilities.keys.map {|t| [t.id, t] }.to_h
 
-    pairs
+    # In order for this to work as a MINIMUM weight problem, we have to
+    # invert all the weights
+    edges = possibilities.map do |team, ts|
+      ts.map {|t| [team.id, t.id, -1 * team.differential(t)] }
+    end.flatten 1
+  
+    g = GraphMatching::Graph::WeightedGraph[
+      *edges
+    ]
+  
+    # The magic
+    m = g.maximum_weighted_matching true
+
+    # Coverting from IDs back to our objects
+    m.edges.map {|(l, r)| [ids[l], ids[r]] }
   end
 end
 
-PRNG = Random.new #50133028578934037664189005052456582016
-p PRNG.seed
+PRNG = Random.new 50133028578934037664189005052456582016
+puts "seed: #{PRNG.seed}"
 
 def play_match(round, pair, game, court)
   a, b = *pair
@@ -130,21 +148,24 @@ def play_match(round, pair, game, court)
     a.wins   << Swiss::Match.new(b, [round, game])
     b.losses << Swiss::Match.new(a, [round, game])
 
-    a.name = "winner of R#{round} G#{game} C#{court}"
-    b.name = "loser of R#{round} G#{game} C#{court}"
+    #a.name = "winner of R#{round} G#{game} C#{court}"
+    #b.name = "loser of R#{round} G#{game} C#{court}"
   elsif val >= 0.6
     a.losses << Swiss::Match.new(b, [round, game])
     b.wins   << Swiss::Match.new(a, [round, game])
 
-    a.name = "loser of R#{round} G#{game} C#{court}"
-    b.name = "winner of R#{round} G#{game} C#{court}"
+    #a.name = "loser of R#{round} G#{game} C#{court}"
+    #b.name = "winner of R#{round} G#{game} C#{court}"
   else # 0.4 <= val < 0.6, draw
     a.draws << Swiss::Match.new(b, [round, game])
     b.draws << Swiss::Match.new(a, [round, game])
 
-    a.name = "left of R#{round} G#{game} C#{court}"
-    b.name = "right of R#{round} G#{game} C#{court}"
+    #a.name = "left of R#{round} G#{game} C#{court}"
+    #b.name = "right of R#{round} G#{game} C#{court}"
   end
+
+  a.name = a.record
+  b.name = b.record
 
   str
 end
@@ -175,7 +196,9 @@ num_rounds = (ARGV[1] || 5).to_i
   end
   
   waits = @swiss.teams.map do |team|
-    matches = [*team.wins, *team.losses, *team.draws].map(&:time).sort_by {|m| m }
+    matches = [*team.wins, *team.losses, *team.draws]
+    matches = matches.filter {|m| m.time[0] != 1 } # disregard first round
+    matches = matches.map(&:time).sort_by {|m| m }
     matches.each_cons(2).map do |a, b|
       1.25 * (b[0] - a[0]) + 0.25 * (b[1] - a[1])
     end
