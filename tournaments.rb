@@ -97,15 +97,17 @@ class Swiss
 
     pairs = best_pairing posses
 
-    sort_by_max_rest pairs
+    sort_by_min_rest pairs
   end
 
-  def sort_by_max_rest(pairs)
+  # Sort by the minimum amount of rest that a single team will have
+  # Not concerned with averages
+  def sort_by_min_rest(pairs)
     pairs.sort_by do |left, right|
       unless left.matches.empty? || right.matches.empty?
         t1 = left.matches.last.time
         t2 = right.matches.last.time
-        t1.zip(t2).map(&:avg)
+        t1.zip(t2).map(&:max)
       else
         0
       end
@@ -133,7 +135,7 @@ class Swiss
   end
 end
 
-PRNG = Random.new 50133028578934037664189005052456582016
+PRNG = Random.new #50133028578934037664189005052456582016
 puts "seed: #{PRNG.seed}"
 
 def play_match(round, pair, game, court)
@@ -173,7 +175,7 @@ end
 num_teams  = (ARGV[0] || 12).to_i
 num_rounds = (ARGV[1] || 5).to_i
 
-#times = 30.times.map do |i|
+#times = 5.times.map do |i|
 #  puts i
 
   @teams = (1..num_teams).map {|t| Team.new t }
@@ -211,7 +213,7 @@ num_rounds = (ARGV[1] || 5).to_i
   puts "max interval: #{max} hrs"
   [min, max]
 #end
-#
+
 #min = times.map(&:first).min
 #max = times.map(&:last).max
 #
