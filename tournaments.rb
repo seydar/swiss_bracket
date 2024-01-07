@@ -66,6 +66,8 @@ class Swiss
     @teams[0].rounds
   end
 
+  # The proper implementation should have a pruned tree
+  # I'm getting sudoku vibes
   def next_round
     ranked = teams.sort {|a, b| a.record <=> b.record  }.reverse
     p ranked.map {|t| [t.id, t.record] }
@@ -83,6 +85,7 @@ class Swiss
         # we did it! we found a suitable match!
         # reset everything
         if first == hunting
+          puts "got a match after #{interleave} tries"
           hunting = nil
           interleave = 1
         end
@@ -94,18 +97,17 @@ class Swiss
         # swap every other element
         # [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
         # [2, 1, 4, 3, 6, 5, 8, 7, 10, 9]
-        puts "finding a match for #{first.id}, #{first.record}"
-        puts "#{first.id} has played #{first.matches.map {|m| m.opponent.id }.inspect}"
-        p ranked.map {|t| [t.id, t.record] }
+        #puts "finding a match for #{first.id}, #{first.record}"
+        #puts "#{first.id} has played #{first.matches.map {|m| m.opponent.id }.inspect}"
+        #p ranked.map {|t| [t.id, t.record] }
         teams = [*interleave.times.map { pairs.pop }.reverse.flatten, first]
-        puts "working with: #{teams.map {|t| [t.id, t.record] }.inspect}"
-        reorder = teams.reverse.each_slice(2).map {|a, b, c| b ? [b, a] : [a] }.flatten.reverse
+        #puts "working with: #{teams.map {|t| [t.id, t.record] }.inspect}"
+        #reorder = teams.reverse.each_slice(2).map {|a, b, c| b ? [b, a] : [a] }.flatten.reverse
+        reorder = teams.shuffle :random => PRNG
         ranked  = reorder + ranked
-        p ranked
-        p ranked.map {|t| [t.id, t.record] }
+        #p ranked
+        #p ranked.map {|t| [t.id, t.record] }
         interleave += 1
-
-        STDIN.gets
       end
     end
 
@@ -113,7 +115,7 @@ class Swiss
   end
 end
 
-PRNG = Random.new 50133028578934037664189005052456582016
+PRNG = Random.new #50133028578934037664189005052456582016
 p PRNG.seed
 
 def play_match(round, pair, game, court)
