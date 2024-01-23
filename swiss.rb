@@ -39,7 +39,7 @@ class Swiss
       unless left.matches.empty? || right.matches.empty?
         t1 = left.matches.last.time
         t2 = right.matches.last.time
-        t1.zip(t2).map(&:max)
+        [t1, t2].max
       else
         0
       end
