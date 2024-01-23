@@ -31,22 +31,15 @@ module ScoreTable
     rows = CSV.parse str, :col_sep => '|'
     stats, team_names, *rounds = split_by(rows) {|r| r.empty? }
 
-    debut, duration = parse_stats stats
+    start, duration = *parse_stats(stats)
 
     teams = team_names.map.with_index {|t, i| [t[0].strip, Team.new(i, t[0].strip)] }.to_h
 
-    start = debut
     rounds = rounds.map.with_index do |r, i|
-      r = parse_round teams, r, start, duration
-
-      if i.odd?
-        start += duration * r.size
-      end
-
-      r
+      parse_round teams, r
     end
 
-    [teams.values, rounds, [debut, duration]]
+    [teams.values, rounds, [start, duration]]
   end
 
   # Given a list of arrays (as output from CSV parsing), split the list
@@ -63,24 +56,21 @@ module ScoreTable
     [Time.parse(start.strip), duration.strip.to_i * 60]
   end
 
-  def parse_round(teams, r, start, duration)
+  def parse_round(teams, r)
     headers, separator, *matches = *r
 
-    time = start
     matches.map do |m|
-      m = parse_match teams, m, time
-      time += duration
-      m
+      parse_match teams, m
     end
   end
 
-  def parse_match(teams, m, time)
+  def parse_match(teams, m)
     #   | game | time | team 1 | score 1 | team 2 | score 2 |
     # is parsed in CVS w/ '|' delimiter as:
     #   nil, game, _, team_1, score_1, team_2, score_2, nil
     _, game, t, t_1, s_1, t_2, s_2, _ = *m.map {|x| x && x.strip }
 
-    p [t, time]
+    time = Time.parse t.strip
 
     t_1 = teams[t_1]
     t_2 = teams[t_2]
