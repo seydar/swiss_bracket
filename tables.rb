@@ -1,3 +1,5 @@
+#!/usr/bin/env ruby
+
 require 'csv'
 require 'terminal-table'
 require 'time'
