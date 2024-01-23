@@ -6,25 +6,35 @@ require 'time'
 require_relative 'swiss.rb'
 require_relative 'team.rb'
 
+# SAMPLE
+# --------------------------
+# start    | 09:00
+# duration | 15
+# 
 # the sun
 # the magician
 # the joker
 # queen of cups
+# the moon
+# the stars
+# the empress
+# the emperor
+# the hierophant
+# the lovers
+# the chariot
+# the tower
 # 
-# team 1    | score 1 | team 2   | score 2
-# -------   | ------- | -------- | -------
-# the sun   |     4   | the moon |    3   
-# the joker |     4   | the moon |    3   
+# |  game  | time  |   team 1    | score 1 |  team 2   | score 2 |
+# +--------+-------+-------------+---------+-----------+---------+
+# | r1g1cA | 09:00 |  the tower  |    2    |  the sun  |    6    |
+# | r1g2cA | 09:15 | the lovers  |    3    | the joker |    3    |
+# | r1g3cA | 09:30 | the emperor |    7    | the moon  |    1    |
 # 
-# team 1    | score 1 | team 2   | score 2
-# -------   | ------- | -------- | -------
-# the sun   |     4   | the moon |    3   
-# the joker |     4   | the moon |    3   
-# 
-# team 1    | score 1 | team 2   | score 2
-# -------   | ------- | -------- | -------
-# the sun   |     4   | the moon |    3   
-# the joker |     4   | the moon |    3   
+# |  game  | time  |     team 1     | score 1 |    team 2     | score 2 |
+# +--------+-------+----------------+---------+---------------+---------+
+# | r1g1cB | 09:00 |  the chariot   |    3    | the magician  |    3    |
+# | r1g2cB | 09:15 | the hierophant |    4    | queen of cups |    2    |
+# | r1g3cB | 09:30 |  the empress   |    6    |   the stars   |    3    |
 
 module ScoreTable
   extend self
