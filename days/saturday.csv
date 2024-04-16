@@ -1,0 +1,28 @@
+start    | 09:00
+duration | 15
+
+the sun
+the magician
+the joker
+queen of cups
+the moon
+the stars
+the empress
+the emperor
+the hierophant
+the lovers
+the chariot
+the tower
+
+| game   | time  | team 1      | score 1 | team 2    | score 2 |
++--------+-------+-------------+---------+-----------+---------+
+| r1g1cA | 09:00 | the tower   |         | the sun   |         |
+| r1g2cA | 09:15 | the lovers  |         | the joker |         |
+| r1g3cA | 09:30 | the emperor |         | the moon  |         |
+
+| game   | time  | team 1         | score 1 | team 2        | score 2 |
++--------+-------+----------------+---------+---------------+---------+
+| r1g1cB | 09:00 | the chariot    |         | the magician  |         |
+| r1g2cB | 09:15 | the hierophant |         | queen of cups |         |
+| r1g3cB | 09:30 | the empress    |         | the stars     |         |
+
