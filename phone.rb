@@ -11,7 +11,7 @@ module Phone
   NUMBER     = tokens[:number]
 
   def sms(opts={})
-    PHONE.messages.create NUMBER, [opts[:to]], opts[:body]
-    #p opts
+    #PHONE.messages.create NUMBER, [opts[:to]], opts[:body]
+    p opts
   end
 end

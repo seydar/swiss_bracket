@@ -164,6 +164,10 @@ class Tournament
   end
 end
 
+# Save previous information
+#system "git commit #{opts[:tables]} -m 'saving the information of the round prior to updating it'"
+
+# Okay run this round
 players = CSV.parse File.read(opts[:teams]), :headers => true,
                                              :col_sep => '|',
                                              :header_converters => lambda {|f| f.strip },
