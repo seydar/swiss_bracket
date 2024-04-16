@@ -1,9 +1,10 @@
 require 'plivo'
+require 'yaml'
 
 module Phone
   extend self
 
-  tokens = File.read 'tokens.yml'
+  tokens = YAML.load File.read('tokens.yml')
 
   AUTH_ID    = tokens[:auth_id]
   AUTH_TOKEN = tokens[:auth_token]
