@@ -26,7 +26,7 @@ opts = Optimist::options do
 Simulate a tournament where teams are determined via Swiss rounds (each team plays the team with the closest record, no rematches).
 
 Usage:
-  tournaments.rb [options]
+  #{__FILE__} [options]
 where [options] are:
 EOS
 

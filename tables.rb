@@ -1,10 +1,33 @@
 #!/usr/bin/env ruby
 
+require 'optimist'
 require 'csv'
 require 'terminal-table'
 require 'time'
 require_relative 'swiss.rb'
 require_relative 'team.rb'
+require_relative 'phone.rb'
+
+opts = Optimist::options do
+  version "1.0.0 (c) 2024 Ari Brown"
+  banner <<-EOS
+Run a tournament where teams are determined via Swiss rounds (each team plays
+the team with the closest record, no rematches).
+
+Text the teams when the new rounds are calculated.
+
+Output the next round, and take that as input.
+
+Usage:
+  #{__FILE__} [options]
+where [options] are:
+EOS
+
+  opt :teams, "CSV of teams and their players and their phone numbers", :type => :string
+  opt :tables, "CSV tables of the rounds", :type => :string
+
+  opt :quiet, "Suppress output", :default => false
+end
 
 # SAMPLE
 # --------------------------
@@ -105,8 +128,50 @@ module ScoreTable
   end
 end
 
-inp   = STDIN.read
-teams, rounds, (start, duration) = ScoreTable.parse inp
+class Tournament
+  attr_accessor :teams
+  attr_accessor :players
+  attr_accessor :start
+  attr_accessor :duration
+  attr_accessor :rounds
+
+  def initialize(teams, players, start, duration, rounds)
+    @teams    = teams
+    @players  = players
+    @start    = start
+    @duration = duration
+    @rounds   = rounds
+  end
+
+  def text_round(round, time, court: nil)
+    round.each.with_index do |(team_1, team_2), i|
+      text_team team_1, time.strftime('%H:%M'), :court => court
+      text_team team_2, time.strftime('%H:%M'), :court => court
+
+      time += @duration
+    end
+  end
+
+  def text_team(team, time, court: nil)
+    # case insensitive
+    players = @players.filter {|p| p['Team'].downcase == team.name.downcase }
+    players.each do |player|
+      Phone.sms :to   => player['Phone'],
+                :body => "DCBP Thaw Tournament: You (#{player['Name']} of team" +
+                         " #{player['Team']}) are playing at #{time} on " +
+                         "court #{court}"
+    end
+  end
+end
+
+players = CSV.parse File.read(opts[:teams]), :headers => true,
+                                             :col_sep => '|',
+                                             :header_converters => lambda {|f| f.strip },
+                                             :converters => lambda {|f| f && f.strip }
+teams, rounds, (start, duration) = ScoreTable.parse File.read(opts[:tables])
+
+tourney = Tournament.new teams, players, start, duration, rounds
+
 round = rounds.size / 2 + 1
 swiss = Swiss.new teams
 headings = ['game', 'time', 'team 1', 'score 1', 'team 2', 'score 2']
@@ -125,9 +190,11 @@ teams.each do |team|
 end
 
 # used further down, before we change the value here
-next_round_start = rounds.last ? rounds.last.last[1] : start
+next_round_end = rounds.last ? rounds.last.last[1] : start - duration
 
 rounds.each do |round|
+  # We overwrite the Time object to be a string, which is why we
+  # pull the time object above
   round.each {|r| r[1] = r[1].strftime '%H:%M' }
 
   puts
@@ -140,7 +207,12 @@ end
 
 court_a, court_b = swiss.next_round.partition.with_index {|_, i| i.even? }
 
-time = next_round_start
+next_round_start = next_round_end + duration
+time = next_round_end
+
+tourney.text_round court_a, next_round_start, :court => "A"
+tourney.text_round court_b, next_round_start, :court => "B"
+
 rows = court_a.map.with_index do |(team_1, team_2), i|
   time += duration
 
@@ -158,7 +230,7 @@ puts Terminal::Table.new(:headings => headings,
                          :style    => {:border_top    => false,
                                        :border_bottom => false})
 
-time = next_round_start 
+time = next_round_end
 rows = court_b.map.with_index do |(team_1, team_2), i|
   time += duration
 
