@@ -173,7 +173,6 @@ teams, rounds, (start, duration) = ScoreTable.parse File.read(opts[:tables])
 
 tourney = Tournament.new teams, players, start, duration, rounds
 
-round = rounds.size / 2 + 1
 swiss = Swiss.new teams
 headings = ['game', 'time', 'team 1', 'score 1', 'team 2', 'score 2']
 
@@ -214,10 +213,11 @@ time = next_round_end
 tourney.text_round court_a, next_round_start, :court => "A"
 tourney.text_round court_b, next_round_start, :court => "B"
 
+round = rounds.size / 2 + 1
 rows = court_a.map.with_index do |(team_1, team_2), i|
   time += duration
 
-  ["r#{round}g#{i + 1}cA",
+  ["r#{round}g#{i + 1} court A",
    time.strftime('%H:%M'),
    team_1.name,
    "",
@@ -235,7 +235,7 @@ time = next_round_end
 rows = court_b.map.with_index do |(team_1, team_2), i|
   time += duration
 
-  ["r#{round}g#{i + 1}cB",
+  ["r#{round}g#{i + 1} court B",
    time.strftime('%H:%M'),
    team_1.name,
    "",

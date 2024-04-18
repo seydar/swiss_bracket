@@ -1,28 +1,46 @@
 start    | 09:00
 duration | 15
 
-the sun
-the magician
-the joker
-queen of cups
-the moon
-the stars
-the empress
-the emperor
-the hierophant
-the lovers
-the chariot
-the tower
+Chariot, The
+Death
+Devil, The
+Emperor, The
+Empress, The
+Fool, The
+Hanged Man, The
+Hermit, The
+Hierophant, The
+High Priestess, The
+Judgement
+Justice
+King of Swords
+Lovers, The
+Magician, The
+Moon, The
+Queen of Cups
+Star, The
+Strength
+Sun, The
+Temperance
+Tower, The
+Wheel of Fortune
+World, The
 
-| game   | time  | team 1      | score 1 | team 2    | score 2 |
-+--------+-------+-------------+---------+-----------+---------+
-| r1g1cA | 09:00 | the tower   |         | the sun   |         |
-| r1g2cA | 09:15 | the lovers  |         | the joker |         |
-| r1g3cA | 09:30 | the emperor |         | the moon  |         |
+| game         | time  | team 1         | score 1 | team 2          | score 2 |
++--------------+-------+----------------+---------+-----------------+---------+
+| r1g1 court A | 09:00 | King of Swords |         | Justice         |         |
+| r1g2 court A | 09:15 | Tower, The     |         | Devil, The      |         |
+| r1g3 court A | 09:30 | Sun, The       |         | Empress, The    |         |
+| r1g4 court A | 09:45 | Star, The      |         | Hanged Man, The |         |
+| r1g5 court A | 10:00 | Moon, The      |         | Hierophant, The |         |
+| r1g6 court A | 10:15 | Lovers, The    |         | Judgement       |         |
 
-| game   | time  | team 1         | score 1 | team 2        | score 2 |
-+--------+-------+----------------+---------+---------------+---------+
-| r1g1cB | 09:00 | the chariot    |         | the magician  |         |
-| r1g2cB | 09:15 | the hierophant |         | queen of cups |         |
-| r1g3cB | 09:30 | the empress    |         | the stars     |         |
+| game         | time  | team 1           | score 1 | team 2              | score 2 |
++--------------+-------+------------------+---------+---------------------+---------+
+| r1g1 court B | 09:00 | Wheel of Fortune |         | Death               |         |
+| r1g2 court B | 09:15 | Temperance       |         | Emperor, The        |         |
+| r1g3 court B | 09:30 | Strength         |         | Fool, The           |         |
+| r1g4 court B | 09:45 | Queen of Cups    |         | Hermit, The         |         |
+| r1g5 court B | 10:00 | Magician, The    |         | High Priestess, The |         |
+| r1g6 court B | 10:15 | World, The       |         | Chariot, The        |         |
 
