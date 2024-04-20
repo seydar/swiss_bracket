@@ -1,46 +1,118 @@
 start    | 09:00
 duration | 15
 
-Chariot, The
+Accountability
+Ace of Vessels
+Ancestors
+Artist, The
+Caravan, The
+Chaos
+Chrysalis, The
+Courage
 Death
-Devil, The
-Emperor, The
-Empress, The
+Doula, The
+Dream
+Establishment, The
 Fool, The
-Hanged Man, The
 Hermit, The
-Hierophant, The
-High Priestess, The
-Judgement
-Justice
-King of Swords
-Lovers, The
-Magician, The
+Love
 Moon, The
-Queen of Cups
+Mutant, The
+Portal, The
+Shadow, The
 Star, The
-Strength
 Sun, The
-Temperance
-Tower, The
-Wheel of Fortune
+Uprising
+Whore, The
 World, The
 
-| game         | time  | team 1         | score 1 | team 2          | score 2 |
-+--------------+-------+----------------+---------+-----------------+---------+
-| r1g1 court A | 09:00 | King of Swords |         | Justice         |         |
-| r1g2 court A | 09:15 | Tower, The     |         | Devil, The      |         |
-| r1g3 court A | 09:30 | Sun, The       |         | Empress, The    |         |
-| r1g4 court A | 09:45 | Star, The      |         | Hanged Man, The |         |
-| r1g5 court A | 10:00 | Moon, The      |         | Hierophant, The |         |
-| r1g6 court A | 10:15 | Lovers, The    |         | Judgement       |         |
+|     game     | time  |   team 1    | score 1 |       team 2       | score 2 |
++--------------+-------+-------------+---------+--------------------+---------+
+| r1g1 court A | 09:00 |  Fool, The  |    3    | Establishment, The |    2    |
+| r1g2 court A | 09:15 |  Uprising   |    1    |     Ancestors      |    3    |
+| r1g3 court A | 09:30 |  Star, The  |    1    |    Caravan, The    |    6    |
+| r1g4 court A | 09:45 | Portal, The |    1    |   Chrysalis, The   |    1    |
+| r1g5 court A | 10:00 |  Moon, The  |    2    |       Death        |    1    |
+| r1g6 court A | 10:35 | Hermit, The |    1    |       Dream        |    4    |
 
-| game         | time  | team 1           | score 1 | team 2              | score 2 |
-+--------------+-------+------------------+---------+---------------------+---------+
-| r1g1 court B | 09:00 | Wheel of Fortune |         | Death               |         |
-| r1g2 court B | 09:15 | Temperance       |         | Emperor, The        |         |
-| r1g3 court B | 09:30 | Strength         |         | Fool, The           |         |
-| r1g4 court B | 09:45 | Queen of Cups    |         | Hermit, The         |         |
-| r1g5 court B | 10:00 | Magician, The    |         | High Priestess, The |         |
-| r1g6 court B | 10:15 | World, The       |         | Chariot, The        |         |
+|     game     | time  |   team 1    | score 1 |     team 2     | score 2 |
++--------------+-------+-------------+---------+----------------+---------+
+| r1g1 court B | 09:00 | Whore, The  |    2    | Ace of Vessels |    2    |
+| r1g2 court B | 09:15 |  Sun, The   |    2    |  Artist, The   |    0    |
+| r1g3 court B | 09:30 | Shadow, The |    5    |     Chaos      |    2    |
+| r1g4 court B | 09:45 | Mutant, The |    2    |    Courage     |    4    |
+| r1g5 court B | 10:00 |    Love     |    2    |   Doula, The   |    1    |
+| r1g6 court B | 10:35 | World, The  |    3    | Accountability |    4    |
+
+|     game     | time  |   team 1    | score 1 |       team 2       | score 2 |
++--------------+-------+-------------+---------+--------------------+---------+
+| r2g1 court A | 10:50 | Shadow, The |    1    |     Ancestors      |    2    |
+| r2g2 court A | 11:05 | Whore, The  |    3    |   Chrysalis, The   |    2    |
+| r2g3 court A | 11:20 |    Love     |    2    |      Courage       |    1    |
+| r2g4 court A | 11:35 |  Moon, The  |    1    |    Caravan, The    |    4    |
+| r2g5 court A | 11:50 | Hermit, The |    0    | Establishment, The |    4    |
+| r2g6 court A | 12:20 |  Fool, The  |    2    |       Dream        |    1    |
+
+|     game     | time  |   team 1    | score 1 |     team 2     | score 2 |
++--------------+-------+-------------+---------+----------------+---------+
+| r2g1 court B | 10:50 |  Uprising   |    4    |     Chaos      |    3    |
+| r2g2 court B | 11:05 | Portal, The |    3    | Ace of Vessels |    2    |
+| r2g3 court B | 11:20 | Mutant, The |    1    |   Doula, The   |    1    |
+| r2g4 court B | 11:35 |  Star, The  |    0    |     Death      |    2    |
+| r2g5 court B | 11:50 | World, The  |    2    |  Artist, The   |    3    |
+| r2g6 court B | 12:20 |  Sun, The   |    0    | Accountability |    5    |
+
+|     game     | time  |   team 1    | score 1 |       team 2       | score 2 |
++--------------+-------+-------------+---------+--------------------+---------+
+| r3g1 court A | 12:35 | Whore, The  |    2    |    Portal, The     |    2    |
+| r3g2 court A | 12:50 | Doula, The  |    1    |   Chrysalis, The   |    2    |
+| r3g3 court A | 13:05 | Shadow, The |    2    |       Death        |    2    |
+| r3g4 court A | 13:20 |  Uprising   |    1    | Establishment, The |    0    |
+| r3g5 court A | 13:35 |  Sun, The   |    2    |      Courage       |    1    |
+| r3g6 court A | 14:20 | Artist, The |    1    |   Accountability   |    1    |
+
+|     game     | time  |   team 1    | score 1 |     team 2     | score 2 |
++--------------+-------+-------------+---------+----------------+---------+
+| r3g1 court B | 12:35 | Mutant, The |    3    | Ace of Vessels |    0    |
+| r3g2 court B | 12:50 |    Love     |    2    |  Caravan, The  |    4    |
+| r3g3 court B | 13:05 |  Star, The  |    2    |  Hermit, The   |    1    |
+| r3g4 court B | 13:20 | World, The  |    2    |     Chaos      |    5    |
+| r3g5 court B | 13:35 |  Fool, The  |    2    |   Ancestors    |    4    |
+| r3g6 court B | 14:20 |  Moon, The  |    5    |     Dream      |    1    |
+
+|     game     | time  |    team 1    | score 1 |     team 2     | score 2 |
++--------------+-------+--------------+---------+----------------+---------+
+| r4g1 court A | 14:35 |  Doula, The  |    0    | Ace of Vessels |    2    |
+| r4g2 court A | 14:50 | Portal, The  |    3    |     Death      |    4    |
+| r4g3 court A | 15:05 |  Fool, The   |    0    |     Chaos      |    5    |
+| r4g4 court A | 15:20 | Caravan, The |    2    |   Ancestors    |    3    |
+| r4g5 court A | 15:35 |   Uprising   |    4    |   Moon, The    |    4    |
+| r4g6 court A | 16:15 |  Star, The   |    0    |     Dream      |    3    |
+
+|     game     | time  |       team 1       | score 1 |     team 2     | score 2 |
++--------------+-------+--------------------+---------+----------------+---------+
+| r4g1 court B | 14:35 |    Shadow, The     |    2    | Chrysalis, The |    3    |
+| r4g2 court B | 14:50 |     World, The     |    4    |  Hermit, The   |    0    |
+| r4g3 court B | 15:05 |      Sun, The      |    4    |      Love      |    0    |
+| r4g4 court B | 15:20 | Establishment, The |    2    |    Courage     |    2    |
+| r4g5 court B | 15:35 |    Mutant, The     |    3    |  Artist, The   |    2    |
+| r4g6 court B | 16:15 |     Whore, The     |    0    | Accountability |    3    |
+
+| game         | time  | team 1      | score 1 | team 2         | score 2 |
++--------------+-------+-------------+---------+----------------+---------+
+| r5g1 court A | 16:30 | Shadow, The |         | Ace of Vessels |         |
+| r5g2 court A | 16:45 | Love        |         | Fool, The      |         |
+| r5g3 court A | 17:00 | Portal, The |         | Courage        |         |
+| r5g4 court A | 17:15 | Uprising    |         | Chrysalis, The |         |
+| r5g5 court A | 17:30 | World, The  |         | Star, The      |         |
+| r5g6 court A | 17:45 | Whore, The  |         | Death          |         |
+
+| game         | time  | team 1             | score 1 | team 2         | score 2 |
++--------------+-------+--------------------+---------+----------------+---------+
+| r5g1 court B | 16:30 | Hermit, The        |         | Doula, The     |         |
+| r5g2 court B | 16:45 | Sun, The           |         | Caravan, The   |         |
+| r5g3 court B | 17:00 | Mutant, The        |         | Moon, The      |         |
+| r5g4 court B | 17:15 | Establishment, The |         | Artist, The    |         |
+| r5g5 court B | 17:30 | Dream              |         | Chaos          |         |
+| r5g6 court B | 17:45 | Ancestors          |         | Accountability |         |
 

@@ -20,6 +20,8 @@ class Swiss
   def next_round
     ranked = teams.sort {|a, b| a.record <=> b.record  }.reverse
 
+    ranked.map {|t| [t, t.record] }.each {|r| STDERR.puts r.inspect }
+
     # possibilities
     # A list of unplayed teams
     posses = teams.map do |team|
