@@ -157,8 +157,9 @@ class Tournament
     players = @players.filter {|p| p['Team'].downcase == team.name.downcase }
     players.each do |player|
       Phone.sms :to   => player['Phone'],
-                :body => "DCBP Thaw Tournament: You (#{player['Name']} of team" +
-                         " #{player['Team']}) are playing at #{time} on " +
+                :body => "DCBP Thaw Tournament: You " +
+                         "(team \"#{player['Team']}\")" +
+                         " are playing at #{time} on " +
                          "court #{court}"
     end
   end
@@ -166,7 +167,7 @@ end
 
 # Okay run this round
 players = CSV.parse File.read(opts[:teams]), :headers => true,
-                                             :col_sep => '|',
+                                             #:col_sep => '|',
                                              :header_converters => lambda {|f| f.strip },
                                              :converters => lambda {|f| f && f.strip }
 teams, rounds, (start, duration) = ScoreTable.parse File.read(opts[:tables])

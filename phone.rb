@@ -12,7 +12,7 @@ module Phone
   NUMBER     = tokens[:number]
 
   def sms(opts={})
-    #PHONE.messages.create NUMBER, [opts[:to]], opts[:body]
-    #p opts
+    return unless opts[:to]
+    PHONE.messages.create NUMBER, [opts[:to]], opts[:body]
   end
 end
