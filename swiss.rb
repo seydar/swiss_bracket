@@ -18,9 +18,10 @@ class Swiss
   # Given a graph (nodes are teams, edges are the score differences between
   # the unplayed teams), find the set of edges that have the lowest total weight.
   def next_round
-    ranked = teams.sort {|a, b| a.record <=> b.record  }.reverse
+    ranked = teams.sort {|a, b| a <=> b  }.reverse
 
-    ranked.map {|t| [t, t.record] }.each {|r| STDERR.puts r.inspect }
+    ranked.map {|t| [t, t.record, t.goals, t.goal_differential] }
+          .each {|r| STDERR.puts r.inspect }
 
     # possibilities
     # A list of unplayed teams
@@ -76,20 +77,20 @@ class Swiss
     val += (a.id - b.id) / 100.0 # so some teams are better than others
   
     if val < 0.5
-      a.wins   << Match.new(b, [round, game])
-      b.losses << Match.new(a, [round, game])
+      a.wins   << Match.new(b, [round, game], 2, 1)
+      b.losses << Match.new(a, [round, game], 1, 2)
   
       #a.name = "winner of R#{round} G#{game} C#{court}"
       #b.name = "loser of R#{round} G#{game} C#{court}"
     elsif val >= 0.55
-      a.losses << Match.new(b, [round, game])
-      b.wins   << Match.new(a, [round, game])
+      a.losses << Match.new(b, [round, game], 1, 2)
+      b.wins   << Match.new(a, [round, game], 2, 1)
   
       #a.name = "loser of R#{round} G#{game} C#{court}"
       #b.name = "winner of R#{round} G#{game} C#{court}"
     else # 0.4 <= val < 0.6, draw
-      a.draws << Match.new(b, [round, game])
-      b.draws << Match.new(a, [round, game])
+      a.draws << Match.new(b, [round, game], 1, 1)
+      b.draws << Match.new(a, [round, game], 1, 1)
   
       #a.name = "left of R#{round} G#{game} C#{court}"
       #b.name = "right of R#{round} G#{game} C#{court}"

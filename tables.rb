@@ -110,8 +110,8 @@ module ScoreTable
     t_1 = teams[t_1]
     t_2 = teams[t_2]
 
-    for_t_1 = Swiss::Match.new t_2, time, s_1, s_2
-    for_t_2 = Swiss::Match.new t_1, time, s_2, s_1
+    for_t_1 = Swiss::Match.new t_2, time, s_1.to_i, s_2.to_i
+    for_t_2 = Swiss::Match.new t_1, time, s_2.to_i, s_1.to_i
 
     if s_1 > s_2
       t_1.wins   << for_t_1
@@ -154,7 +154,7 @@ class Tournament
 
   def text_team(team, time, court: nil)
     # case insensitive
-    players = @players.filter {|p| p['Team'].downcase == team.name.downcase }
+    players = @players.filter {|p| (p['Team'] || '').downcase == team.name.downcase }
     players.each do |player|
       Phone.sms :to   => player['Phone'],
                 :body => "DCBP Thaw Tournament: You " +

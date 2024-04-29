@@ -25,13 +25,24 @@ class Team
     record.sum
   end
 
+  def goals
+    [*wins, *losses, *draws].sum {|m| m.own_score }
+  end
+
+  def goal_differential
+    [*wins, *losses, *draws].sum {|m| m.own_score - m.their_score }
+  end
+
   def played?(other)
     matches.map(&:opponent).include?(other) ||
       other.matches.map(&:opponent).include?(self)
   end
 
   def <=>(other)
-    record <=> other.record
+    #record <=> other.record
+    [(wins.size * 3 + draws.size), goals, goal_differential] <=>
+      [(other.wins.size * 3 + other.draws.size), other.goals, other.goal_differential]
+    #(wins.size * 3 + draws.size) <=> (other.wins.size * 3 + other.draws.size)
   end
 
   def differential(other)
