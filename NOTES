@@ -1,0 +1,6 @@
+./tables.rb -t players/saturday.csv -a days/empty.csv > days/saturday.csv
+cp days/saturday.csv views/saturday.html
+vim views/saturday.html # remove fluff, turn + into | in table
+redcarpet --parse tables views/saturday.html | sponge views/saturday.html
+vim views/saturday.html # add stylesheet
+scp views/saturday.html ari@aribrown.com:~/public/

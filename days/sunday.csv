@@ -1,0 +1,64 @@
+start    | 09:00
+duration | 35
+
+Adam
+Andreas
+Dylan
+Jason
+Josh G
+Mike
+Quinn
+Salem
+Sam
+Stu
+Tucker
+Zach F
+
+|     game     | time  | team 1 | score 1 | team 2 | score 2 |
++--------------+-------+--------+---------+--------+---------+
+| r1g1 court A | 09:20 | Zach F |    4    |  Adam  |    5    |
+| r1g2 court A | 10:00 |  Stu   |    3    | Dylan  |    3    |
+| r1g3 court A | 10:50 | Salem  |    5    | Josh G |    2    |
+
+|     game     | time  | team 1 | score 1 | team 2  | score 2 |
++--------------+-------+--------+---------+---------+---------+
+| r1g1 court B | 09:20 | Tucker |    6    | Andreas |    5    |
+| r1g2 court B | 10:00 |  Sam   |    3    |  Jason  |    2    |
+| r1g3 court B | 10:50 | Quinn  |    3    |  Mike   |    2    |
+
+|     game     | time  | team 1 | score 1 | team 2 | score 2 |
++--------------+-------+--------+---------+--------+---------+
+| r2g1 court A | 11:25 |  Stu   |    5    |  Adam  |    2    |
+| r2g2 court A | 12:00 |  Mike  |    2    | Jason  |    2    |
+| r2g3 court A | 12:55 |  Sam   |    6    | Quinn  |    3    |
+
+|     game     | time  | team 1 | score 1 | team 2  | score 2 |
++--------------+-------+--------+---------+---------+---------+
+| r2g1 court B | 11:25 | Dylan  |    5    | Andreas |    2    |
+| r2g2 court B | 12:00 | Zach F |    2    | Josh G  |    7    |
+| r2g3 court B | 12:55 | Tucker |    5    |  Salem  |    7    |
+
+|     game     | time  | team 1 | score 1 | team 2  | score 2 |
++--------------+-------+--------+---------+---------+---------+
+| r3g1 court A | 13:30 | Zach F |    8    | Andreas |    3    |
+| r3g2 court A | 14:05 |  Stu   |    5    |  Mike   |    4    |
+| r3g3 court A | 15:00 | Quinn  |    3    | Josh G  |    5    |
+
+|     game     | time  | team 1 | score 1 | team 2 | score 2 |
++--------------+-------+--------+---------+--------+---------+
+| r3g1 court B | 13:30 | Jason  |    3    | Dylan  |    1    |
+| r3g2 court B | 14:05 | Tucker |    7    |  Adam  |    7    |
+| r3g3 court B | 15:00 |  Sam   |    1    | Salem  |    7    |
+
+| game         | time  | team 1 | score 1 | team 2 | score 2 |
++--------------+-------+--------+---------+--------+---------+
+| r4g1 court A | 15:35 | Jason  |    3    | Adam   |    5    |
+| r4g2 court A | 16:10 | Tucker |    3    | Dylan  |    3    |
+| r4g3 court A | 16:45 | Zach F |    6    | Quinn  |    1    |
+
+| game         | time  | team 1 | score 1 | team 2  | score 2 |
++--------------+-------+--------+---------+---------+---------+
+| r4g1 court B | 15:35 | Mike   |    4    | Andreas |   3     |
+| r4g2 court B | 16:10 | Sam    |    6    | Josh G  |   6     |
+| r4g3 court B | 16:45 | Stu    |    2    | Salem   |   8     |
+
