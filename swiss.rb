@@ -23,6 +23,8 @@ class Swiss
     ranked.map {|t| [t, t.record, t.goals, t.goal_differential] }
           .each {|r| STDERR.puts r.inspect }
 
+    ranked.map {|t| [t, t.record] }.each {|r| STDERR.puts r.inspect }
+
     # possibilities
     # A list of unplayed teams
     posses = teams.map do |team|

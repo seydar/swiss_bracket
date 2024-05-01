@@ -64,7 +64,11 @@ World, The
 
 |     game     | time  |   team 1    | score 1 |       team 2       | score 2 |
 +--------------+-------+-------------+---------+--------------------+---------+
+<<<<<<< HEAD
 | r3g1 court A | 12:35 | Whore, The  |    2    |    Portal, The     |    3    |
+=======
+| r3g1 court A | 12:35 | Whore, The  |    2    |    Portal, The     |    2    |
+>>>>>>> refs/remotes/origin/master
 | r3g2 court A | 12:50 | Doula, The  |    1    |   Chrysalis, The   |    2    |
 | r3g3 court A | 13:05 | Shadow, The |    2    |       Death        |    2    |
 | r3g4 court A | 13:20 |  Uprising   |    1    | Establishment, The |    0    |
@@ -100,6 +104,7 @@ World, The
 
 | game         | time  | team 1      | score 1 | team 2         | score 2 |
 +--------------+-------+-------------+---------+----------------+---------+
+<<<<<<< HEAD
 | r5g1 court A | 16:30 | Shadow, The |    3    | Ace of Vessels |    2    |
 | r5g2 court A | 16:45 | Love        |    4    | Fool, The      |    2    |
 | r5g3 court A | 17:00 | Portal, The |    1    | Courage        |    0    |
@@ -115,4 +120,21 @@ World, The
 | r5g4 court B | 17:15 | Establishment, The |    3    | Artist, The    |    1    |
 | r5g5 court B | 17:30 | Dream              |    1    | Chaos          |    5    |
 | r5g6 court B | 17:45 | Ancestors          |    3    | Accountability |    1    |
+=======
+| r5g1 court A | 16:30 | Shadow, The |         | Ace of Vessels |         |
+| r5g2 court A | 16:45 | Love        |         | Fool, The      |         |
+| r5g3 court A | 17:00 | Portal, The |         | Courage        |         |
+| r5g4 court A | 17:15 | Uprising    |         | Chrysalis, The |         |
+| r5g5 court A | 17:30 | World, The  |         | Star, The      |         |
+| r5g6 court A | 17:45 | Whore, The  |         | Death          |         |
+
+| game         | time  | team 1             | score 1 | team 2         | score 2 |
++--------------+-------+--------------------+---------+----------------+---------+
+| r5g1 court B | 16:30 | Hermit, The        |         | Doula, The     |         |
+| r5g2 court B | 16:45 | Sun, The           |         | Caravan, The   |         |
+| r5g3 court B | 17:00 | Mutant, The        |         | Moon, The      |         |
+| r5g4 court B | 17:15 | Establishment, The |         | Artist, The    |         |
+| r5g5 court B | 17:30 | Dream              |         | Chaos          |         |
+| r5g6 court B | 17:45 | Ancestors          |         | Accountability |         |
+>>>>>>> refs/remotes/origin/master
 
