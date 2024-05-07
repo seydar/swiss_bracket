@@ -2,23 +2,8 @@
 
 require_relative 'team.rb'
 require_relative 'swiss.rb'
+require_relative 'helpers.rb'
 require 'optimist'
-
-class Array
-  def extract(&blk)
-    ix = find_index(&blk)
-    return nil unless ix
-    val = self[ix]
-    delete_at ix
-    val
-  end
-
-  def avg
-    sum.to_f / size
-  end
-end
-
-
 
 opts = Optimist::options do
   version "1.0.0 (c) 2024 Ari Brown"
