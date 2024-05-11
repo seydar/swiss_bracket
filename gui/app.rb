@@ -12,13 +12,14 @@ class SwissApp
 
   MARGIN   = 10
   CONTROLS = 310
-  PLOT     = [800, 500]
+  PLOT     = [700, 500]
   TABLE    = 200
   WIDTH    = TABLE + PLOT[0] + 4 * MARGIN
   HEIGHT   = CONTROLS + PLOT[1] + 4 * MARGIN
 
-  attr_accessor :desc
+  attr_accessor :info
   attr_accessor :swiss
+  attr_accessor :rounds
   attr_accessor :plotter
 
   def initialize
@@ -32,10 +33,32 @@ class SwissApp
                                                  :header_converters => lambda {|f| f.strip },
                                                  :converters => lambda {|f| f && f.strip }
     teams, rounds, (start, duration) = ScoreTable.parse File.read(@files[:tables])
-    @swiss = Swiss.new teams
+    @swiss  = Swiss.new teams
+    @rounds = rounds.group_by do |round|
+      match = round[0]
+      game  = match[0]
+      court = game.split(" court ")[1]
+    end
+    @info   = {:start  => start, :duration => duration}
+
+    calc_scroll_size
 
     # plot
     @plotter = Plotter.new self, MARGIN
+  end
+
+  def calc_scroll_size
+    courts            = @rounds.values.size
+    rounds_per_court  = @rounds.values[0].size
+    matches_per_round = @rounds.values[0][0].size
+    @scroll = {:width  => courts * Plotter::COURT_WIDTH,
+               :height => rounds_per_court *
+                          (Plotter::MATCH_HEIGHT + Plotter::MATCH_SPACING) *
+                          matches_per_round.size}
+  end
+
+  def refresh
+    calc_scroll_size
   end
 
   def launch
@@ -44,14 +67,14 @@ class SwissApp
 
       grid {
 
-        
+        plot_area x: 0, y: 0
       }
 
     }.show
   end
 
   def plot_area(x: nil, y: nil, xs: 3, ys: 2)
-    @plot = area {
+    @plot = scrolling_area(@scroll[:width], @scroll[:height]) {
       left x; xspan xs
       top  y; yspan ys
 
@@ -60,11 +83,11 @@ class SwissApp
 
         # Background
         rectangle(0, 0, area[:area_width], area[:area_height]) {
-          fill 0xffffff
+          fill 0xaaaaaa
         }
 
         # Show Rounds
-        @plotter.display_rounds
+        @plotter.display_courts
       }
 
       on_mouse_up do |area_event|
