@@ -6,8 +6,9 @@ module GUI
     include Glimmer
 
     COURT_WIDTH   = 500
-    ROUND_SPACING = 15
-    MATCH_HEIGHT  = 35
+    ROUND_SPACING = 25
+    MARKER_SHIFT  = 0.95
+    MATCH_HEIGHT  = 40
     MATCH_SPACING = 5
     MATCH_WIDTH   = 350
 
@@ -53,7 +54,7 @@ module GUI
     end
 
     def display_rounds(rnds, x, y)
-      round_height = MATCH_HEIGHT * rnds[0].size
+      round_height = (MATCH_HEIGHT + MATCH_SPACING) * rnds[0].size
 
       # Build the markers
       rnds.each.with_index do |round, i|
@@ -67,14 +68,18 @@ module GUI
 
     def display_round_marker(round, x, y, height, i)
       header_size = 15 # guess
-      y     += (height + ROUND_SPACING) * i
+      y          += (height + ROUND_SPACING) * i
 
       # Framing for the round
       #rectangle(x + 5, y + header_size, width, height) {
       #  stroke 0xff0000
       #  fill 0xd6d6d6
       #}
-      circle(x + 5 + round.size * 33, y + header_size + height / 2.0, height) {
+
+      diameter = height
+      radius   = diameter / 2.0
+
+      circle(x + 5 + MARKER_SHIFT * diameter, y + header_size + radius, diameter) {
         stroke 0x0000ff
         fill 0xffffff
       }
@@ -88,26 +93,23 @@ module GUI
 
     def display_round(round, x, y, height, i)
       header_size = 15 # guess
-      y     += (height + ROUND_SPACING) * i
-
-      puts "building round @ (#{x}, #{y})"
+      y          += (height + ROUND_SPACING) * i
 
       # Header
-      round_num = round[0][0].split(" ")[0].split(/[A-Za-z]/)[1]
+      round_num = round[0][:game].split(" ")[0].split(/[A-Za-z]/)[1]
       text(x, y) { string "Round #{round_num}" }
 
       # Individual matches
       round.each.with_index do |match, i|
         display_match(match,
                       x + header_size + 5,
-                      y + header_size + 5 + MATCH_HEIGHT * i)
+                      y + header_size + 5 + (MATCH_SPACING + MATCH_HEIGHT) * i)
       end
     end
 
     def display_match(match, x, y)
-      height = 20
 
-      rectangle(x, y, MATCH_WIDTH, height) {
+      rectangle(x, y, MATCH_WIDTH, MATCH_HEIGHT) {
         stroke 0xff0000
         fill 0xd6d6d6
       }
@@ -115,9 +117,11 @@ module GUI
     end
 
     def format_match(match)
-      game_num = match[0].split(" ")[0].split(/[A-Za-z]/)[2]
-      time     = match[1].strftime "%H:%M"
-      "Game #{game_num} | #{time} | #{match[2]} | #{match[3]} | #{match[4]} | #{match[5]}"
+      game_num = match[:game].split(" ")[0].split(/[A-Za-z]/)[2]
+      time     = match[:time].strftime "%H:%M"
+
+      "Game:\t#{game_num}\t#{match[:team_1].name}\t|\t#{match[:team_2].name}\n" +
+      "Time:\t#{time}\t#{match[:score_1]}\t|\t#{match[:score_2]}"
     end
   end
 end

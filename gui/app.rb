@@ -33,10 +33,23 @@ class SwissApp
                                                  :header_converters => lambda {|f| f.strip },
                                                  :converters => lambda {|f| f && f.strip }
     teams, rounds, (start, duration) = ScoreTable.parse File.read(@files[:tables])
+
+    # Convert the rounds from text to objects
+    rounds = rounds.map do |round|
+      round.map do |(game, time, team_1, score_1, team_2, score_2)|
+        {:game    => game,
+         :time    => time,
+         :team_1  => teams.find {|t| t.name == team_1 },
+         :score_1 => score_1,
+         :team_2  => teams.find {|t| t.name == team_2 },
+         :score_2 => score_2}
+      end
+    end
+
     @swiss  = Swiss.new teams
     @rounds = rounds.group_by do |round|
       match = round[0]
-      game  = match[0]
+      game  = match[:game]
       court = game.split(" court ")[1]
     end
     @info   = {:start  => start, :duration => duration}
@@ -49,12 +62,13 @@ class SwissApp
 
   def calc_scroll_size
     courts            = @rounds.values.size
-    rounds_per_court  = @rounds.values[0].size
+    rounds_per_court  = @rounds.values[0].size - 1
     matches_per_round = @rounds.values[0][0].size
     @scroll = {:width  => courts * Plotter::COURT_WIDTH,
                :height => rounds_per_court *
-                          (Plotter::MATCH_HEIGHT + Plotter::MATCH_SPACING) *
-                          matches_per_round.size}
+                          (Plotter::ROUND_SPACING +
+                            (Plotter::MATCH_HEIGHT + Plotter::MATCH_SPACING) *
+                            matches_per_round.size)}
   end
 
   def refresh
