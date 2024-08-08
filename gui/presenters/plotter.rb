@@ -5,7 +5,7 @@ module GUI
   class Plotter
     include Glimmer
 
-    COURT_WIDTH   = 500
+    COURT_WIDTH   = 450
     ROUND_SPACING = 25
     MARKER_SHIFT  = 0.95
     MATCH_HEIGHT  = 40
@@ -16,10 +16,17 @@ module GUI
     attr_accessor :plot
     attr_accessor :margin
     attr_accessor :area
+    attr_accessor :matches
+    attr_accessor :info
 
     def initialize(app, margin)
       @app    = app
       @margin = margin
+      @matches = []
+    end
+
+    def inspect
+      "#<GUI::Plotter #{matches.size} matches>"
     end
 
     def plot_info_box
@@ -31,18 +38,23 @@ module GUI
                 area[:area_height] / plot[1]]
     end
 
-    def select_info_box(x, y)
-      #@info   = @circles.find {|c| c[:circle].contain?(x, y) }
-      #@info ||= @edges.find {|e| e[:line].contain?(x,
-      #                                             y,
-      #                                             outline: true, 
-      #                                             distance_tolerance: 25) }
+    def select_match_box(x, y)
+      @info = @matches.find {|m| m[:box].contain?(x, y) }
+    end
+
+    def display_info_box
+      return unless @info
+
+      rectangle(@info[:x], @info[:y], 150, 100) {
+        stroke 0xf003fc
+        fill 0xeeeeee
+      }
     end
 
     def display_courts
-      app.rounds.keys.each.with_index do |court, i|
+      @matches = app.rounds.keys.map.with_index do |court, i|
         display_court(court, i * COURT_WIDTH + 15, 0)
-      end
+      end.flatten
     end
 
     def display_court(court, x, y)
@@ -57,13 +69,15 @@ module GUI
       round_height = (MATCH_HEIGHT + MATCH_SPACING) * rnds[0].size
 
       # Build the markers
+      # This one is purely cosmetic
       rnds.each.with_index do |round, i|
         display_round_marker(round, x, y, round_height, i)
       end
 
-      rnds.each.with_index do |round, i|
+      # This one gives us the matches that we will check mouseclicks against
+      rnds.map.with_index do |round, i|
         display_round(round, x, y, round_height, i)
-      end
+      end.flatten
     end
 
     def display_round_marker(round, x, y, height, i)
@@ -71,18 +85,19 @@ module GUI
       y          += (height + ROUND_SPACING) * i
 
       # Framing for the round
-      #rectangle(x + 5, y + header_size, width, height) {
-      #  stroke 0xff0000
-      #  fill 0xd6d6d6
-      #}
 
-      diameter = height
-      radius   = diameter / 2.0
-
-      circle(x + 5 + MARKER_SHIFT * diameter, y + header_size + radius, diameter) {
-        stroke 0x0000ff
-        fill 0xffffff
+      rectangle(x + 5, y + header_size, 15, height + 5) {
+        stroke 0xf003fc
+        fill 0xeeeeee
       }
+
+      #diameter = height
+      #radius   = diameter / 2.0
+
+      #circle(x + 5 + MARKER_SHIFT * diameter, y + header_size + radius, diameter) {
+      #  stroke 0x0000ff
+      #  fill 0xffffff
+      #}
 
       rectangle(x + 15, y - height, height * 2, height * 3) {
         stroke 0xffffff
@@ -100,7 +115,7 @@ module GUI
       text(x, y) { string "Round #{round_num}" }
 
       # Individual matches
-      round.each.with_index do |match, i|
+      round.map.with_index do |match, i|
         display_match(match,
                       x + header_size + 5,
                       y + header_size + 5 + (MATCH_SPACING + MATCH_HEIGHT) * i)
@@ -108,12 +123,43 @@ module GUI
     end
 
     def display_match(match, x, y)
-
-      rectangle(x, y, MATCH_WIDTH, MATCH_HEIGHT) {
+      rect = rectangle(x, y, MATCH_WIDTH, MATCH_HEIGHT) {
         stroke 0xff0000
         fill 0xd6d6d6
       }
-      text(x + 5, y + 5) { string format_match(match) }
+
+      #text(x + 5, y + 5) { string format_match(match) }
+      text(x + 5, y + 5) do
+        game_num = match[:game].split(" ")[0].split(/[A-Za-z]/)[2]
+        time     = match[:time].strftime "%H:%M"
+        txt = "Game:\t#{game_num}\n" +
+              "Time:\t#{time}"
+        string txt
+      end
+
+      txt = match[:team_1].name.center(30) + match[:team_2].name.center(30)
+
+      text_height = 12  * (OS.mac? ? 0.75 : 1.35)
+      text_width  = txt.size * (text_height * (OS.mac? ? 0.75 : 0.60)) * 0.75
+      text_x = (MATCH_WIDTH - text_width) / 2.0
+      text_y = (MATCH_HEIGHT - text_height) / 5.0
+
+      text(x + text_x + 55, y + text_y) do
+        string txt
+      end
+
+      txt = match[:score_1].to_s.ljust(20) + match[:score_2].to_s.rjust(20)
+
+      text_height = 12  * (OS.mac? ? 0.75 : 1.35)
+      text_width  = txt.size * (text_height * (OS.mac? ? 0.75 : 0.60)) * 0.76
+      text_x = (MATCH_WIDTH - text_width) / 2.0
+      text_y = text_height + 4 + (MATCH_HEIGHT - text_height) / 5.0
+
+      text(x + text_x + 55, y + text_y) do
+        string txt
+      end
+
+      {:match => match, :box => rect, :x => x, :y => y}
     end
 
     def format_match(match)

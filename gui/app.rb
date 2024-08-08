@@ -79,9 +79,17 @@ class SwissApp
     window("Helvetican Bracketing", WIDTH, HEIGHT, true) {
       margined true
 
-      grid {
+      tab {
+        tab_item("Rounds") {
+          grid {
 
-        plot_area x: 0, y: 0
+            plot_area x: 0, y: 0
+          }
+        }
+
+        tab_item("Rankings") {
+          
+        }
       }
 
     }.show
@@ -102,10 +110,18 @@ class SwissApp
 
         # Show Rounds
         @plotter.display_courts
+
+        # Display Info
+        @plotter.display_info_box
       }
 
       on_mouse_up do |area_event|
-        @plotter.select_info_box(area_event[:x], area_event[:y])
+        @plotter.select_match_box(area_event[:x], area_event[:y])
+        pp area_event
+        pp @plotter.info
+
+        pp @plotter.matches[0]
+
         @plot.queue_redraw_all
       end
     }
