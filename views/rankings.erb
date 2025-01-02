@@ -1,0 +1,18 @@
+<table>
+  <tr>
+    <th>Rank</th>
+    <th>Team</th>
+    <th>[W, L, D]</th>
+    <th>Total Goals</th>
+    <th>Goal Differential</th>
+  </tr>
+  <% rankings.each.with_index do |(team, w_l_d, goals, diff), rank| %>
+    <tr>
+      <td><%= rank + 1 %></td>
+      <td><%= team.name %></td>
+      <td><%= w_l_d.inspect %></td>
+      <td><%= goals %></td>
+      <td><%= diff %></td>
+    </tr>
+  <% end %>
+</table>

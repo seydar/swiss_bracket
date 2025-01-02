@@ -1,0 +1,38 @@
+<script src='/create.js'></script>
+
+<h1>new tournament</h1>
+
+<% if flash[:message] %>
+  <div id='flash' style='color: red; border: 1px solid red; width: 30%;'>
+    <%= flash[:message] %>
+  </div>
+<% end %>
+
+<form action='/new' method='post'>
+  <p>
+    start time: <input type='text' id='start_time' name='start'> 
+  </p>
+
+  <p>
+    duration: <input type='text' id='duration' name='duration'>
+  </p>
+
+  <p>
+    courts: <input type='text' id='courts' name='courts'>
+  </p>
+  
+  teams:
+  <div class='teams'>
+    <ul id='team_list'>
+    </ul>
+    <ul>
+      <li>
+        <label>Team:</label>
+        <input type='text' id='team_name'>
+        <button type='button' onclick="add_team()">Add Team</button>
+      </li>
+    </ul>
+  </div>
+  <input type='submit' value='Create Tournament'>
+</form>
+

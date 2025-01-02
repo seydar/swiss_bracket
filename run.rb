@@ -5,6 +5,7 @@ require 'csv'
 require 'terminal-table'
 require 'time'
 require_relative 'swiss.rb'
+require_relative 'tournament.rb'
 require_relative 'team.rb'
 require_relative 'phone.rb'
 
@@ -128,43 +129,6 @@ module ScoreTable
   end
 end
 
-class Tournament
-  attr_accessor :teams
-  attr_accessor :players
-  attr_accessor :start
-  attr_accessor :duration
-  attr_accessor :rounds
-
-  def initialize(teams, players, start, duration, rounds)
-    @teams    = teams
-    @players  = players
-    @start    = start
-    @duration = duration
-    @rounds   = rounds
-  end
-
-  def text_round(round, time, court: nil)
-    round.each.with_index do |(team_1, team_2), i|
-      text_team team_1, time.strftime('%H:%M'), :court => court
-      text_team team_2, time.strftime('%H:%M'), :court => court
-
-      time += @duration
-    end
-  end
-
-  def text_team(team, time, court: nil)
-    # case insensitive
-    players = @players.filter {|p| (p['Team'] || '').downcase == team.name.downcase }
-    players.each do |player|
-      Phone.sms :to   => player['Phone'],
-                :body => "DCBP Thaw Tournament: You " +
-                         "(team \"#{player['Team']}\")" +
-                         " are playing at #{time} on " +
-                         "court #{court}"
-    end
-  end
-end
-
 # Okay run this round
 players = CSV.parse File.read(opts[:teams]), :headers => true,
                                              #:col_sep => '|',
@@ -172,10 +136,17 @@ players = CSV.parse File.read(opts[:teams]), :headers => true,
                                              :converters => lambda {|f| f && f.strip }
 teams, rounds, (start, duration) = ScoreTable.parse File.read(opts[:tables])
 
-tourney = Tournament.new teams, players, start, duration, rounds
+# Produce a nice map of {team => [players...]}
+full_teams = teams.map do |team|
+  [team,
+   players.filter {|p| (p['Team'] || '') == team.name.downcase }]
+end.to_h
 
 swiss = Swiss.new teams
 headings = ['game', 'time', 'team 1', 'score 1', 'team 2', 'score 2']
+
+tourney = Tournament.new full_teams, start, duration, swiss
+
 
 ########################
 # Reprint everything to so that the output can be the input

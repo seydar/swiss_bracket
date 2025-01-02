@@ -1,0 +1,57 @@
+<script src='/update.js'></script>
+
+<h1>update tournament</h1>
+
+<h2>
+  Tournament <%= @tournament.id %>
+</h2>
+
+<% if flash[:message] %>
+  <div id='flash' style='color: red; border: 1px solid red; width: 30%;'>
+    <%= flash[:message] %>
+  </div>
+<% end %>
+
+<form action='/players/<%= @tournament.id %>' method='post'>
+
+  start: <input type='text' name='start' value='<%= @tournament.start.strftime '%H:%M' %>'> <br />
+  duration: <input type='text' name='duration' value='<%= @tournament.duration %>'> <br />
+  courts: <input type='text' name='courts' value='<%= @tournament.courts %>'> <br />
+  
+  <p>
+    teams:
+    <ul>
+      <% @tournament.teams.each do |team| %>
+        <li>
+          <%= team.name %>
+          <ul>
+            <div class='players'>
+              <ul id='<%= team.id %>_players_list'>
+                <% team.players.each do |player, phone| %>
+                  <li>
+                    <a style='color:red;' onclick="this.parentNode.remove()">x</a>
+                    <input type='text' name='players[<%= team.id %>][names][]' value='<%= player %>'>
+                    <input type='text' name='players[<%= team.id %>][phones][]' value='<%= phone %>'>
+                  </li>
+                <% end %>
+              </ul>
+              <ul>
+                <li>
+                  <label>Player:</label>
+                  <input type='text' id='<%= team.id %>_player_name'>
+                  <label>Phone:</label>
+                  <input type='text' id='<%= team.id %>_player_phone'>
+                  <button type='button' onclick="add_player('<%= team.id %>')">Add Player</button>
+                </li>
+              </ul>
+            </div>
+          </ul>
+        </li>
+      <% end %>
+    </ul>
+  </p>
+
+  <input type='submit' value='Update Tournament'>
+  <input type='button' onclick="location.href='/<%= @tournament.id %>'" value='Cancel update'>
+</form>
+

@@ -4,13 +4,15 @@ class Team
   attr_accessor :wins
   attr_accessor :losses
   attr_accessor :draws
+  attr_accessor :players
 
   def initialize(id, name=nil)
-    @id     = id
-    @name   = name || id
-    @wins   = []
-    @losses = []
-    @draws  = []
+    @id      = id
+    @name    = name || id
+    @wins    = []
+    @losses  = []
+    @draws   = []
+    @players = []
   end
 
   def record

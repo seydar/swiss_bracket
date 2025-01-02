@@ -1,0 +1,6 @@
+  <%= link_to "/", :text => "all tourneys" %> <br />
+  <%= link_to tournament, :mode => :update, :text => "edit tourney" %> <br />
+  <%= link_to "/players/#{tournament.id}", :mode => :read, :text => "view players" %> <br />
+  <%= link_to "/players/#{tournament.id}/edit", :mode => :update, :text => "edit players" %> <br />
+  <%= link_to "/rankings/#{tournament.id}", :mode => :read, :text => "view rankings" %> <br />
+

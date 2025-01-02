@@ -1,0 +1,35 @@
+<% groups = round.group_by.with_index {|m, i| i % tournament.courts } %>
+<% groups.each.with_index do |(court, group), group_num| %>
+  <h2>Court <%= ('A'..'Z').to_a[court] %></h2>
+  <table>
+    <tr>
+      <th>Time</th>
+      <th>Team 1</th>
+      <th>Score</th>
+      <th>Team 2</th>
+      <th>Score</th>
+    </tr>
+    <% group.each.with_index do |match, match_num| %>
+      <tr>
+        <td><%= match.time.strftime '%H:%M' %></td>
+        <td><%= match.team_1.name %></td>
+        <td>
+          <% if editable %>
+            <input type='text' name='points[<%= match.object_id %>][1]' value='<%= match.score_1 %>'>
+          <% else %>
+            <%= match.score_1 ? match.score_1 : "" %>
+          <% end %>
+        </td>
+        <td><%= match.team_2.name %></td>
+        <td>
+          <% if editable %>
+            <input type='text' name='points[<%= match.object_id %>][2]' value='<%= match.score_2 %>'>
+          <% else %>
+            <%= match.score_2 ? match.score_2 : "" %>
+          <% end %>
+        </td>
+      </tr>
+    <% end %>
+  </table>
+<% end %>
+

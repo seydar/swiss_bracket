@@ -1,0 +1,53 @@
+<script src='/update.js'></script>
+
+<h1>update tournament</h1>
+
+<h2>
+  Tournament <%= @tournament.id %>
+</h2>
+
+<p>
+  <%= erb :links, :locals => {:tournament => @tournament} %>
+</p>
+
+<% if flash[:message] %>
+  <div id='flash' style='color: red; border: 1px solid red; width: 30%;'>
+    <%= flash[:message] %>
+  </div>
+<% end %>
+
+<form action='/edit/<%= @tournament.id %>' method='post'>
+
+  start: <input type='text' name='start' value='<%= @tournament.start.strftime '%H:%M' %>'> <br />
+  duration: <input type='text' name='duration' value='<%= @tournament.duration %>'> <br />
+  courts: <input type='text' name='courts' value='<%= @tournament.courts %>'> <br />
+  
+  <p>
+    <%= erb :rankings, :locals => {:rankings => @rankings} %>
+  </p>
+
+  <p>
+    <a href="/new_round/<%= @tournament.id %>">calculate a new round</a>
+  </p>
+
+  <p>
+    scores
+    <ul>
+      <% @tournament.rounds.each.with_index do |round, i| %>
+        <li>
+          <h2>Round <%= i + 1 %></li>
+          <ul>
+            <%= erb :round, :locals => {:tournament => @tournament,
+                                        :round  => round,
+                                        :round_num => i,
+                                        :editable => true} %>
+          </ul>
+        </li>
+      <% end %>
+    </ul>
+  </p>
+
+  <input type='submit' value='Update Tournament'>
+  <input type='button' onclick="location.href='/<%= @tournament.id %>'" value='Cancel update'>
+</form>
+

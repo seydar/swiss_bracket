@@ -1,0 +1,33 @@
+<h1>tournament</h1>
+
+<h2>
+  Tournament <%= @tournament.id %>
+</h2>
+
+<p>
+  <%= link_to "/", :text => "all tourneys" %> <br />
+  <%= link_to @tournament, :mode => :read, :text => "view tourney" %><br />
+  <%= link_to @tournament, :mode => :update, :text => "edit tourney" %> <br />
+  <%= link_to "/players/#{@tournament.id}/edit", :mode => :update, :text => "edit players" %> <br />
+</p>
+
+start: <%= @tournament.start %> <br />
+duration: <%= @tournament.duration %> <br />
+courts: <%= @tournament.courts %> <br />
+
+<p>
+  teams:
+  <ul>
+    <% @tournament.teams.each do |team| %>
+      <li>
+        <%= team.name %>
+        <ul>
+          <% team.players.each do |player| %>
+            <li><%= player %></li>
+          <% end %>
+        </ul>
+      </li>
+    <% end %>
+  </ul>
+</p>
+

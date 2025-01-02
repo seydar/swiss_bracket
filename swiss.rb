@@ -18,12 +18,12 @@ class Swiss
   # Given a graph (nodes are teams, edges are the score differences between
   # the unplayed teams), find the set of edges that have the lowest total weight.
   def next_round
-    ranked = teams.sort {|a, b| a <=> b  }.reverse
+    ranked = teams.sort.reverse
 
-    ranked.map {|t| [t, t.record, t.goals, t.goal_differential] }
-          .each {|r| STDERR.puts r.inspect }
+    #ranked.map {|t| [t, t.record, t.goals, t.goal_differential] }
+    #      .each {|r| STDERR.puts r.inspect }
 
-    ranked.map {|t| [t, t.record] }.each {|r| STDERR.puts r.inspect }
+    #ranked.map {|t| [t, t.record] }.each {|r| STDERR.puts r.inspect }
 
     # possibilities
     # A list of unplayed teams

@@ -1,0 +1,37 @@
+<h1>tournament</h1>
+
+<h2>
+  Tournament <%= @tournament.id %>
+</h2>
+
+<p>
+  <%= erb :links, :locals => {:tournament => @tournament} %>
+</p>
+
+start: <%= @tournament.start %> <br />
+duration: <%= @tournament.duration %> <br />
+courts: <%= @tournament.courts %> <br />
+
+<p>
+  <%= erb :rankings, :locals => {:rankings => @rankings} %>
+</p>
+
+<p>
+  scores
+  <ul>
+    <% @tournament.rounds.each.with_index do |round, i| %>
+      <li>
+        <h2>Round <%= i + 1 %></li>
+        <ul>
+          <%= erb :round, :locals => {:tournament => @tournament,
+                                      :round  => round,
+                                      :round_num => i,
+                                      :editable => false} %>
+        </ul>
+      </li>
+    <% end %>
+  </ul>
+</p>
+
+
+
