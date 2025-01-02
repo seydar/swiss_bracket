@@ -1,7 +1,7 @@
 class Tournament
-  Pairing = Struct.new :time, :team_1, :score_1, :team_2, :score_2
+  Pairing = Struct.new :time, :team_1, :score_1, :team_2, :score_2, :court
 
-  attr_accessor :teams # {team => [player, ...]}
+  attr_accessor :teams
   attr_accessor :start
   attr_accessor :duration
   attr_accessor :courts
@@ -19,25 +19,26 @@ class Tournament
     @id       = object_id
   end
 
-  def text_round(round, time, court: nil)
-    round.each.with_index do |(team_1, team_2), i|
-      text_team team_1, time.strftime('%H:%M'), :court => court
-      text_team team_2, time.strftime('%H:%M'), :court => court
-
-      time += @duration
-    end
+  def text_round(round)
+    round.each {|pairing| text_match pairing }
   end
 
-  def text_team(team, time, court: nil)
-    # case insensitive
-    players = @players.filter {|p| (p['Team'] || '').downcase == team.name.downcase }
-    players.each do |player|
-      Phone.sms :to   => player['Phone'],
+  def text_team(team, time, court)
+    team.players.each do |player, phone|
+      next unless phone =~ /\d{11}/
+
+      Phone.sms :to   => phone,
                 :body => "DCBP Thaw Tournament: You " +
-                         "(team \"#{player['Team']}\")" +
+                         "(team \"#{team.name}\")" +
                          " are playing at #{time} on " +
                          "court #{court}"
     end
+  end
+
+  def text_match(pairing)
+    time = pairing.time.strftime '%H:%M'
+    text_team pairing.team_1, time, pairing.court
+    text_team pairing.team_2, time, pairing.court
   end
 end
 

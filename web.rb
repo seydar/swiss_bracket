@@ -4,6 +4,7 @@ require 'rack-flash'
 require_relative 'team.rb'
 require_relative 'tournament.rb'
 require_relative 'swiss.rb'
+require_relative 'phone.rb'
 
 # login info
 # https://stackoverflow.com/questions/2691997/sinatra-how-do-i-provide-access-to-a-login-form-while-preventing-access-to-the
@@ -187,8 +188,6 @@ class ThawApp < Sinatra::Base
     @tournament = settings.tournaments.find {|t| t.id == params[:id].to_i }
     redirect '/new' unless @tournament
 
-    pp params
-
     params[:players].each do |team_id, players|
       players = players["names"].zip players["phones"]
 
@@ -216,23 +215,25 @@ class ThawApp < Sinatra::Base
 
     formatted_pairs = pairings.map.with_index do |(t1, t2), i|
       start += @tournament.duration * 60 if i % @tournament.courts == 0
-      Tournament::Pairing.new start, t1, nil, t2, nil
+      court = ('A'..'Z').to_a[i % @tournament.courts]
+      Tournament::Pairing.new start, t1, nil, t2, nil, court
     end
 
     @tournament.rounds << formatted_pairs
 
+    save_tournaments
+
     redirect "/edit/#{params[:id]}"
   end
 
-  get '/rankings/:id' do
+  get '/text/:id' do
     @tournament = settings.tournaments.find {|t| t.id == params[:id].to_i }
     redirect '/new' unless @tournament
 
-    @rankings = @tournament.swiss.teams.sort.reverse.map do |team|
-      [team, team.record, team.goals, team.goal_differential]
-    end
+    redirect "/#{params[:id]}" unless @tournament.rounds.last
+    @tournament.text_round @tournament.rounds.last
 
-    erb :rankings
+    redirect "/#{params[:id]}"
   end
 
   not_found do
