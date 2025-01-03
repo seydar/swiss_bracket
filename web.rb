@@ -28,6 +28,7 @@ class ThawApp < Sinatra::Base
     set :public_folder, 'public'
     set :server, 'puma'
     enable :sessions
+    enable :logging
     set :session_secret, '19028309u23oirhjknes-pl]]*&^%$#[];/../faskljdhf0923i4902734y9uihrqwejkf'
 
     use Rack::Flash
@@ -242,5 +243,5 @@ class ThawApp < Sinatra::Base
   end
 end
 
-ThawApp.run!
+#ThawApp.run!
 
