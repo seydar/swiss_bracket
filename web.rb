@@ -189,16 +189,18 @@ class ThawApp < Sinatra::Base
     @tournament = settings.tournaments.find {|t| t.id == params[:id].to_i }
     redirect '/new' unless @tournament
 
-    params[:players].each do |team_id, players|
-      players = players["names"].zip players["phones"]
+    if params[:players]
+      params[:players].each do |team_id, players|
+        players = players["names"].zip players["phones"]
 
-      team = @tournament.teams.find {|t| t.id == team_id.to_i }
-      redirect "/#{@tournament.id}" unless team
+        team = @tournament.teams.find {|t| t.id == team_id.to_i }
+        redirect "/#{@tournament.id}" unless team
 
-      team.players = players
+        team.players = players
+      end
+
+      save_tournaments
     end
-
-    save_tournaments
 
     redirect "/players/#{@tournament.id}"
   end
