@@ -96,6 +96,23 @@ class ThawApp < Sinatra::Base
         end
       end
     end
+
+    def calc_new_round
+      refresh_swiss_matches @tournament
+
+      pairings = @tournament.swiss.next_round
+
+      last_round = @tournament.rounds.last
+      start = last_round ? last_round.last.time : @tournament.start - @tournament.duration * 60
+
+      formatted_pairs = pairings.map.with_index do |(t1, t2), i|
+        start += @tournament.duration * 60 if i % @tournament.courts == 0
+        court = ('A'..'Z').to_a[i % @tournament.courts]
+        Tournament::Pairing.new start, t1, nil, t2, nil, court
+      end
+
+      @tournament.rounds << formatted_pairs
+    end
   end
 
   before do
@@ -125,6 +142,7 @@ class ThawApp < Sinatra::Base
 
     settings.tournaments << tourn
 
+    calc_new_round
     save_tournaments
 
     redirect "/#{tourn.id}"
@@ -209,21 +227,7 @@ class ThawApp < Sinatra::Base
     @tournament = settings.tournaments.find {|t| t.id == params[:id].to_i }
     redirect '/new' unless @tournament
 
-    refresh_swiss_matches @tournament
-
-    pairings = @tournament.swiss.next_round
-
-    last_round = @tournament.rounds.last
-    start = last_round ? last_round.last.time : @tournament.start - @tournament.duration * 60
-
-    formatted_pairs = pairings.map.with_index do |(t1, t2), i|
-      start += @tournament.duration * 60 if i % @tournament.courts == 0
-      court = ('A'..'Z').to_a[i % @tournament.courts]
-      Tournament::Pairing.new start, t1, nil, t2, nil, court
-    end
-
-    @tournament.rounds << formatted_pairs
-
+    calc_new_round
     save_tournaments
 
     redirect "/edit/#{params[:id]}"
