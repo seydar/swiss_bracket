@@ -1,5 +1,6 @@
 require 'sinatra/base'
 require 'rack-flash'
+require 'sysrandom/securerandom'
 
 require_relative 'team.rb'
 require_relative 'tournament.rb'
@@ -24,12 +25,12 @@ class ThawApp < Sinatra::Base
   end
 
   configure do
-    #set :environment, :production
+    enable :logging
+    enable :sessions
+    set :session_secret, ENV.fetch('SESSION_SECRET') { SecureRandom.hex(64) }
     set :public_folder, 'public'
     set :server, 'puma'
-    enable :sessions
-    enable :logging
-    set :session_secret, '19028309u23oirhjknes-pl]]*&^%$#[];/../faskljdhf0923i4902734y9uihrqwejkf'
+    #set :environment, :production
 
     use Rack::Flash
 
