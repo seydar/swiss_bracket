@@ -29,10 +29,13 @@ class ThawApp < Sinatra::Base
     enable :sessions
     set :session_secret, ENV.fetch('SESSION_SECRET') { SecureRandom.hex(64) }
     set :public_folder, 'public'
-    set :server, 'puma'
-    #set :environment, :production
+    set :environment, :production
 
     use Rack::Flash
+
+    set :bind, '127.0.0.1'
+    set :port, 4001
+    set :server, 'puma'
 
     set :tournaments, []
     load_tournaments
@@ -250,5 +253,5 @@ class ThawApp < Sinatra::Base
   end
 end
 
-#ThawApp.run!
+ThawApp.run!
 

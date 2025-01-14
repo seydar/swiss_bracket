@@ -2,19 +2,14 @@ Eye.config do
   logger '/home/ari/servers/eye.log'
 end
 
-ADDR = "127.0.0.1"
-PORT = 4005
-
-PID_FILE = "tmp/puma.pid"
-
 Eye.app 'polo' do
   working_dir File.expand_path(File.dirname(__FILE__))
 
   process 'polo' do
-    pid_file PID_FILE
+    pid_file "tmp/puma.pid"
     daemonize true
 
-    start_command "thin -R config.ru -a #{HOST} -p #{PORT} -P tmp/thin.pid -l logs/thin.log start"
+    start_command "ruby web.rb"
     stdall 'logs/default.log'
 
     stop_signals [:TERM, 10.seconds]
