@@ -147,6 +147,7 @@ class ThawApp < Sinatra::Base
 
     settings.tournaments << tourn
 
+    @tournament = tourn
     calc_new_round
     save_tournaments
 
