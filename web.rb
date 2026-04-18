@@ -107,7 +107,8 @@ class ThawApp < Sinatra::Base
       pairings = @tournament.swiss.next_round
 
       last_round = @tournament.rounds.last
-      start = last_round ? last_round.last.time : @tournament.start - @tournament.duration * 60
+      #start = last_round ? last_round.last.time : @tournament.start - @tournament.duration * 60
+      start = Time.now - @tournament.duration * 60
 
       formatted_pairs = pairings.map.with_index do |(t1, t2), i|
         start += @tournament.duration * 60 if i % @tournament.courts == 0
