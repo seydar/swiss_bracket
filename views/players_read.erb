@@ -5,10 +5,7 @@
 </h2>
 
 <p>
-  <%= link_to "/", :text => "all tourneys" %> <br />
-  <%= link_to @tournament, :mode => :read, :text => "view tourney" %><br />
-  <%= link_to @tournament, :mode => :update, :text => "edit tourney" %> <br />
-  <%= link_to "/players/#{@tournament.id}/edit", :mode => :update, :text => "edit players" %> <br />
+  <%= erb :links, :locals => {:tournament => @tournament} %>
 </p>
 
 start: <%= @tournament.start %> <br />
